@@ -1,5 +1,5 @@
 const { mongoose } = require("mongoose");
-const Email = require("./models/email.js");
+const Email = require("./models/emails.js");
 
 main().then(() => { console.log("connnection made successsfully"); })
     .catch(err => console.log(err));
@@ -308,9 +308,9 @@ const promotionmails = [{
         "link": "https://ultrafit.com/join"
     }
 ]
-const main = async() => {
+const addToDatabas = async() => {
     await Email.deleteMany({}).then(() => { console.log("Databse is empty") }).catch((err) => { console.error(err) });
-    await Email.insertMany(promotionmails).then(() => { console.log("work mails added to database successfully") }).catch((err) => { console.error(err) });
+    await Email.insertMany(promotionmails).then(() => { console.log("mails added to database successfully") }).catch((err) => { console.error(err) });
 }
 
-main();
+addToDatabas();
