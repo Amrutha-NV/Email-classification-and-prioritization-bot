@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const methodOverride = require('method-override');
 const { title } = require("process");
 const ejsMate = require('ejs-mate');
+const Email = require("./models/email.js");
 
 
 app.set("view engine", "ejs");
@@ -16,6 +17,12 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.json());
 
+const mongoose = require('mongoose');
+main().then(() => { console.log("connnection made successsfully"); })
+    .catch(err => console.log(err));
+async function main() {
+    await mongoose.connect('mongodb://127.0.0.1:27017/EmailDatabase');
+}
 
 app.get("/", (req, res) => {
     res.send("request is successful");
