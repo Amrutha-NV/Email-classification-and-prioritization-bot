@@ -911,7 +911,6 @@ const sampleWorkmails = [{
 ]
 
 const addToDatabase = async() => {
-    await Email.deleteMany({}).then(() => { console.log("Databse is empty") }).catch((err) => { console.error(err) });
     await Email.insertMany(sampleWorkmails).then(() => { console.log("work mails added to database successfully") }).catch((err) => { console.error(err) });
 }
 

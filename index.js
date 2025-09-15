@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const methodOverride = require('method-override');
 const { title } = require("process");
 const ejsMate = require('ejs-mate');
-const Email = require("./models/email.js");
+const emailrouter = require("./routes/emails.js");
 
 
 app.set("view engine", "ejs");
@@ -24,9 +24,9 @@ async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/EmailDatabase');
 }
 
-app.get("/", (req, res) => {
-    res.send("request is successful");
-})
+app.use("/emails", emailrouter);
+
+
 
 app.listen(port, (req, res) => {
     console.log(`listening at port ${port}`);
