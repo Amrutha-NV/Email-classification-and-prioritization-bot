@@ -309,7 +309,7 @@ const promotionmails = [{
     }
 ]
 const addToDatabas = async() => {
-    await Email.deleteMany({}).then(() => { console.log("Databse is empty") }).catch((err) => { console.error(err) });
+
     await Email.insertMany(promotionmails).then(() => { console.log("mails added to database successfully") }).catch((err) => { console.error(err) });
 }
 
