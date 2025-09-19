@@ -1,0 +1,32 @@
+<% layout("layouts/bolierplate.ejs") %>
+
+    <body>
+        <div class="email-container">
+            <div class="card border-secondary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= email.subject %>
+
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <%= email.from %>
+                    </h6>
+                    <p class="card-text">
+                        <%= email.body %>
+                    </p>
+                    <p class="card-text">
+                        <%= email.link %>
+                    </p>
+                    <div class="buttons"> <a href="/emails/compose" class="card-link btn btn-primary">Reply</a>
+                        <a href="#" class="card-link  btn btn-primary">Forward</a>
+                        <div class="card-link ">
+                            <form method="post" action="/emails/<%=email._id %>?_method=delete">
+                                <button class="btn btn-primary">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </body>
