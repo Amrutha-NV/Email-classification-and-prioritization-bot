@@ -1,0 +1,19 @@
+<% layout("/layouts/bolierplate.ejs") %>
+
+<body>
+    <div class="inbox">
+        <h3 calss=" category-title"><b>Promotions Emails</b></h3>
+        <% for (email of emails) { %>
+            <div class="card email badge-body">
+                <div class="card-body">
+                    <span class="badge rounded-pill bg-info text-dark"><%= email.label %></span>
+                    <h5 class="card-title">
+                        <a href="/emails/<%= email._id %>"><%= email.subject %></a>
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><%= email.from %></h6>
+                    <p class="card-text"><%= email.body.substring(0,100) %></p>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</body>
