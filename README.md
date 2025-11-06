@@ -18,8 +18,8 @@ contributions by AMRUTHA N V
 
 3.Built and deployed a custom spam detection ML model using Python, scikit-learn, and Flask, achieving 96% accuracy on labeled datasets.
 
-Developed a hybrid AI + rule-based pipeline, combining Gemini’s semantic understanding and logistic regression model outputs for improved prioritization accuracy.
+4.Developed a hybrid AI + rule-based pipeline, combining Gemini’s semantic understanding and logistic regression model outputs for improved prioritization accuracy.
 
-Created secure user authentication and login setup with OAuth2 for Gmail access and Express-session for route protection.
+5.Created secure user authentication and login setup with OAuth2 for Gmail access and Express-session for route protection.
 
-Designed a categorized inbox UI using EJS templates, displaying real-time updates for urgent, non-spam, and work-related emails with clean, responsive styling.
+6.Designed a categorized inbox UI using EJS templates, displaying real-time updates for urgent, non-spam, and work-related emails with clean, responsive styling.
