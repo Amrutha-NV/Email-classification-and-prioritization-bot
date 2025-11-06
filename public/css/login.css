@@ -1,0 +1,104 @@
+*{
+    text-decoration: none;
+    color: black;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+.typing {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #ffffff, #a6d8ff, #5bbcff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid rgba(255, 255, 255, 0.75);
+  width: 0;
+  animation: typing 3s steps(10, end) forwards, blink 0.7s infinite;
+}
+
+/* Typing animation */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 8ch; }  /* “Mail Flow” = 8 characters */
+}
+
+/* Blinking cursor animation */
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-image: url("../images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.login-container::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(8px);
+    z-index: 0;
+
+    }
+    
+.logo{
+    width: 40rem;
+    height: 30rem;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    color: white;
+     font-family: "Momo Trust Display", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+
+}
+.card-body{
+    margin-top: 2rem;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.card-title{
+     background: linear-gradient(90deg,#ffffff,#ffffff,#ffffff);
+    text-shadow: 0 0 10px rgba(173, 217, 255, 1),
+    0 0 20px rgba(173, 211, 255, 1);
+    background-clip: text;
+     -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.h1{
+    background: linear-gradient(90deg,#ffffff,#cfe8ff,#80c8ff);
+    text-shadow: 0 0 10px rgba(173, 217, 255, 1),
+    0 0 20px rgba(173, 211, 255, 1);
+    background-clip: text;
+     -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}

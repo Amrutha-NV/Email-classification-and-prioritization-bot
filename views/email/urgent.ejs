@@ -2,11 +2,11 @@
 
 <body>
     <div class="inbox">
-        <h3 calss=" category-title"><b>Promotions Emails</b></h3>
+        <h3 calss=" category-title"><b>Urgent Mails</b></h3>
         <% for (email of emails) { %>
             <div class="card email badge-body">
                 <div class="card-body">
-                    <span class="badge rounded-pill bg-info text-dark"><%= email.label %></span>
+                    <span class="badge rounded-pill bg-danger"><%= email.label %></span>
                     <h5 class="card-title">
                         <a href="/emails/<%= email._id %>"><%= email.subject %></a>
                     </h5>

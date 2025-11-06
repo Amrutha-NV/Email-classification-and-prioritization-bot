@@ -1,5 +1,5 @@
 <% layout("/layouts/bolierplate.ejs") %>
-
+// Compose Email Page logic of adding email to database has to be implemented in accordance with the schema so as of now button as been disabled
     <body>
         <form action="/emails/" method="post">
             <div class="compose-container">
@@ -23,7 +23,7 @@
                     <label for="body" class="form-label">Body</label>
                     <textarea class="form-control" id="body" rows="5" name="email[body]" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit"disabled class="btn btn-primary">Submit</button>
 
             </div>
 
