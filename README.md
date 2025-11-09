@@ -9,7 +9,6 @@ Mini-Project
 
 
 
-
 contributions by AMRUTHA N V
 
 1.Integrated real-time Gmail updates using Google Cloud Pub/Sub and webhooks, enabling live email fetching without manual refresh.
@@ -23,3 +22,4 @@ contributions by AMRUTHA N V
 5.Created secure user authentication and login setup with OAuth2 for Gmail access and Express-session for route protection.
 
 6.Designed a categorized inbox UI using EJS templates, displaying real-time updates for urgent, non-spam, and work-related emails with clean, responsive styling.
+
