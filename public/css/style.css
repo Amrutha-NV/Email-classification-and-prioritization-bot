@@ -82,3 +82,46 @@ body {
 .category-title{
     margin:10px;
 }
+
+/* draft.ejs styling */
+
+/* Light Pastel Button Styles */
+
+.btn-view, .btn-edit, .btn-delete {
+  text-decoration: none !important;
+}
+
+.btn-view {
+  background-color: #A8E6CF;  /* Mint Green */
+  color: #004d40;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  margin-left: 3px;
+
+}
+.btn-view:hover {
+  background-color: #8dd1b5;
+}
+
+.btn-edit {
+  background-color: #D8B4E2; /* Soft Lavender */
+  color: #4a235a;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+}
+.btn-edit:hover {
+  background-color: #c69bd6;
+}
+
+.btn-delete {
+  background-color: #F7A1A1; /* Soft Rose Pink */
+  color: #7b1e1e;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+}
+.btn-delete:hover {
+  background-color: #f48484;
+}

@@ -11,12 +11,7 @@ const session = require('express-session');
 const passport = require('passport');
 const passportSetup = require('./config/passportsetup');
 const emailrouter = require("./routes/emails.js");
-const userrouter=require("./routes/user.js");
-const { google } = require('googleapis');
-const User = require('./models/user.js');
-const Email = require('./models/emails.js'); // added: Email model
-const { getAccessTokenFromRefreshToken } = require('./config/gmailhelper.js');
-const { handlePubSubPush } = require('./config/pubsubHandler.js');
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -60,24 +55,8 @@ app.get("/", (req, res) => {
     res.redirect("/auth/login");
 });
 app.use("/emails", emailrouter);
-app.use("/auth",userrouter);
 
-// helper to decode base64url/body parts
-function decodeBase64Url(input) {
-    if (!input) return '';
-    let b64 = input.replace(/-/g, '+').replace(/_/g, '/');
-    while (b64.length % 4) b64 += '=';
-    return Buffer.from(b64, 'base64').toString('utf8');
-}
-function extractMessageBody(payload) {
-    if (!payload) return '';
-    if (payload.body && payload.body.data) return decodeBase64Url(payload.body.data);
-    if (Array.isArray(payload.parts)) return payload.parts.map(part => extractMessageBody(part)).filter(Boolean).join('\n');
-    return '';
-}
 
-// preprocessing middleware to fetch full email details
-app.post('/webhook/gmail', express.json({ limit: '1mb' }), handlePubSubPush);
 
 app.listen(port, (req, res) => {
     console.log(`listening at port ${port}`);
