@@ -4,8 +4,9 @@
       <span class="navbar-toggler-icon"></span>
     </button>
         <div>
-            <h5 style="color:azure">Email-Classification-prioritization-bot</h5>
+            <h1 style="color:azure">Mail Flow</h1>
         </div>
+        
         <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -19,6 +20,9 @@
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/emails/Compose"><button type="button" class="btn btn-info">Compose</button></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/emails/urgent"><button type="button" class="btn btn-danger">Urgent</button></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/emails/"><button type="button" class="btn btn-primary">All Inbox</button></a>
@@ -35,7 +39,21 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/emails/spam"><button type="button" class="btn btn-danger">Spam</button></a>
                     </li>
-
+                    <br>
+                    <li class="nav-item">
+                        <form method="POST" action="/auth/sync/start" class="sync-form">
+    <button type="submit nav-link active" class="btn btn-success ">
+        <i class="fas fa-plug"></i> Sync-in
+    </button>
+    
+    <p class="text-muted mt-2">
+        (This will activate the Gemini bot to monitor your Inbox.)
+    </p>
+</form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/auth/logout"><button type="button" class="btn btn-secondary">Logout</button></a>
+                    </li>
                 </ul>
             </div>
 

@@ -25,9 +25,25 @@ const emailSchema = new schema({
     urgent: {
         type: Boolean,
     },
+    spam:{
+        type: Boolean
+    },
     link: {
         type: String
-    }
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    gmail_message_id: {
+        type: String,
+    },
+    gmail_thread_id: {
+        type: String,
+    },
+
+    
 
 });
 const Email = mongoose.model("Email", emailSchema);
