@@ -23,6 +23,7 @@ router.post("/", authCheck,async(req, res) => {
         res.redirect("/emails/");
         req.flash('success', 'A new mail recieved!');
     });
+
 //to read emails from database
 router.get("/",authCheck, async(req, res) => {
     const emails = await Email.find({to:req.user.email});
@@ -62,6 +63,26 @@ router.get("/urgent",authCheck, async (req, res) => {
     res.render("./email/urgent.ejs", { emails });
 });
 
+// ------------------------------------
+// Sent Emails
+// ------------------------------------
+router.get("/sent", authCheck, async (req, res) => {
+    try {
+        const sentEmails = await Email.find({
+            user: req.user._id,
+            from: req.user.email
+        }).sort({ createdAt: -1 });
+
+        res.render("./email/sent.ejs", { emails: sentEmails });
+
+    } catch (err) {
+        console.error("Error loading sent emails:", err);
+        res.status(500).send("Error loading sent emails");
+    }
+});
+
+
+
 // to view individual emails
 router.get("/:id",authCheck, async(req, res) => {
     let { id } = req.params;
@@ -76,8 +97,5 @@ router.delete("/:id",authCheck, async(req, res) => {
     res.redirect("/emails/");
     req.flash('success', 'Email deleted successfully!');
 });
-
-
-
 
 module.exports = router;

@@ -12,16 +12,12 @@ body {
     width: 100%;
 }
 
-
 /* nav bar styling */
-
 .btn {
     width: 10rem;
 }
 
-
 /* styling for inbox.ejs */
-
 .inbox {
     margin-top: 1rem;
     margin-left: 1.5rem;
@@ -50,16 +46,41 @@ body {
     position: relative;
 }
 
+/* ------------------------------ */
+/* BADGES (Global)                */
+/* ------------------------------ */
 .badge {
-    position: absolute;
-    right: 10px;
-    top: 5%;
-    font-size: 1rem;
+    display: inline-block;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-weight: 600;
 }
 
+/* Draft Badge (Red) */
+.badge-draft {
+    background-color: #ff6b6b;
+    color: white;
+    margin-right: 10px;
+}
 
-/* show.ejs styling */
+/* Status Badge (Pending / Edited) */
+.badge-status {
+    background-color: #e0e7ff;
+    color: #2c3e50;
+}
 
+/* Ensure badges do NOT overlap text */
+.badge-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px; /* Adds spacing between badge row and message body */
+}
+
+/* ------------------------------ */
+/* show.ejs styling               */
+/* ------------------------------ */
 .email-container {
     margin-top: 1rem;
     margin-left: 20rem;
@@ -71,14 +92,134 @@ body {
     flex-direction: row;
 }
 
-
-/* compose.ejs styling */
-
+/* ------------------------------ */
+/* compose.ejs styling            */
+/* ------------------------------ */
 .compose-container {
     margin-top: 1rem;
     margin-left: 1rem;
+    /* enhanced ui */
+    max-width: 700px;
+    margin: 2rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-.category-title{
-    margin:10px;
+.category-title {
+    margin: 10px;
+}
+
+.compose-container:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.compose-container h1 {
+    color: #343a40;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Inputs and Textareas */
+.compose-container .form-control {
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: all 0.2s ease;
+}
+.compose-container .form-control:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+}
+
+/* Buttons styling */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background-color: #6c63ff;
+    border: none;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5851db;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: #2ecc71;
+    border: none;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: #ff6b6b;
+    border: none;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #e74c3c;
+    transform: translateY(-2px);
+}
+
+/* Smooth transitions */
+.card, .form-control, .btn {
+    transition: all 0.3s ease;
+}
+
+/* ------------------------------ */
+/* draft.ejs Button Styling       */
+/* ------------------------------ */
+
+.btn-view, .btn-edit, .btn-delete {
+  text-decoration: none !important;
+}
+
+.btn-view {
+  background-color: #A8E6CF;
+  color: #004d40;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  margin-left: 3px;
+}
+
+.btn-view:hover {
+  background-color: #8dd1b5;
+}
+
+.btn-edit {
+  background-color: #D8B4E2;
+  color: #4a235a;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+}
+.btn-edit:hover {
+  background-color: #c69bd6;
+}
+
+.btn-delete {
+  background-color: #F7A1A1;
+  color: #7b1e1e;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+}
+.btn-delete:hover {
+  background-color: #f48484;
 }

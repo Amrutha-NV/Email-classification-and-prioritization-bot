@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const port = 8080;
@@ -22,6 +23,7 @@ const User = require('./models/user.js');
 const Email = require('./models/emails.js'); // added: Email model
 const { getAccessTokenFromRefreshToken } = require('./config/gmailhelper.js');
 const { handlePubSubPush } = require('./config/pubsubHandler.js');
+const draftRoutes = require("./routes/draft.js");
 
 // ---------- View Engine Setup FIRST ----------
 app.engine("ejs", ejsMate);
@@ -81,6 +83,7 @@ app.get("/", (req, res) => {
 });
 app.use("/emails", emailrouter);
 app.use("/auth",userrouter);
+app.use("/draft", draftRoutes);
 
 // helper to decode base64url/body parts
 function decodeBase64Url(input) {

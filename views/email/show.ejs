@@ -17,7 +17,16 @@
                     <p class="card-text">
                         <%= email.link %>
                     </p>
-                    <div class="buttons"> <a href="/emails/compose" class="card-link btn btn-primary">Reply</a>
+                    <div class="buttons"> 
+                        <a href="/emails/compose" class="card-link btn btn-primary">Reply</a>
+
+                        <% if (email.urgent === true) { %>
+                            <!-- Only show this button for urgent emails -->
+                            <a href="/draft/from-email/<%= email._id %>" class="card-link btn  btn-primary">
+                                Draft Message
+                            </a>
+                        <% } %>
+
                         <a href="#" class="card-link  btn btn-primary">Forward</a>
                         <div class="card-link ">
                             <form method="post" action="/emails/<%=email._id %>?_method=delete">

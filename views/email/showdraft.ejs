@@ -1,0 +1,77 @@
+<% layout("layouts/bolierplate.ejs") %>
+
+<body>
+  <div class="compose-container mt-4">
+    <h1>Draft Message</h1>
+
+    <!-- UPDATE FORM -->
+    <form action="/draft/<%= draft._id %>?_method=PUT" method="POST">
+
+      <!-- From -->
+      <div class="mb-3">
+        <label class="form-label">From</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          value="<%= draft.originalEmail?.from %>" 
+          readonly
+        >
+      </div>
+
+      <!-- To -->
+      <div class="mb-3">
+        <label class="form-label">To</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          value="<%= draft.originalEmail?.to %>" 
+          readonly
+        >
+      </div>
+
+      <!-- Subject -->
+      <div class="mb-3">
+        <label class="form-label">Subject</label>
+        <input 
+          type="text" 
+          class="form-control"
+          name="subject"
+          value="<%= draft.originalEmail?.subject %>">
+      </div>
+
+      <!-- Draft Body -->
+      <div class="mb-3">
+        <label class="form-label">Draft Body</label>
+        <textarea 
+          class="form-control"
+          name="draftBody"
+          rows="8"><%= draft.draftBody %></textarea>
+      </div>
+
+      <!-- Status -->
+      <!-- <p>
+        <strong>Status:</strong>
+        <span class="badge 
+            <%= draft.status === 'pending' ? 'bg-warning text-dark' : '' %>
+            <%= draft.status === 'edited' ? 'bg-info text-dark' : '' %>
+            <%= draft.status === 'sent' ? 'bg-success text-light' : '' %>">
+            <%= draft.status.toUpperCase() %>
+        </span>
+      </p> -->
+
+      <!-- SAVE BUTTON -->
+      <button type="submit" class="btn btn-secondary mt-3">Save Edits</button>
+    </form>
+
+    <!-- SEND BUTTON (SEPARATE FORM) -->
+    <form action="/draft/<%= draft._id %>/send" method="POST" class="mt-3">
+      <button class="btn btn-success">Send</button>
+    </form>
+
+    <!-- DELETE BUTTON (SEPARATE FORM) -->
+    <form action="/draft/<%= draft._id %>?_method=DELETE" method="POST" class="mt-3">
+      <button class="btn btn-danger">Delete</button>
+    </form>
+
+  </div>
+</body>
