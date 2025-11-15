@@ -25,7 +25,7 @@ router.post("/", authCheck,async(req, res) => {
     });
 //to read emails from database
 router.get("/",authCheck, async(req, res) => {
-    const emails = await Email.find({});
+    const emails = await Email.find({to:req.user.email});
     res.render("./email/inbox.ejs", { emails });
 });
 
@@ -35,30 +35,30 @@ router.get("/",authCheck, async(req, res) => {
 
 // Work Emails
 router.get("/work", authCheck,async (req, res) => {
-    const emails = await Email.find({ label: 'work', spam : false });
+    const emails = await Email.find({ label: 'work', spam : false,to:req.user.email });
     res.render("./email/work.ejs", { emails });
 });
 
 // Personal Emails
 router.get("/personal",authCheck, async (req, res) => {
-    const emails = await Email.find({ label: "personal" , spam : false });
+    const emails = await Email.find({ label: "personal" , spam : false,to:req.user.email  });
     res.render("./email/personal.ejs", { emails });
 });
 
 // Promotions Emails
 router.get("/promotions",authCheck, async (req, res) => {
-    const emails = await Email.find({ label: "promotions" , spam : false });
+    const emails = await Email.find({ label: "promotions" , spam : false,to:req.user.email  });
     res.render("./email/promotions.ejs", { emails });
 });
 
 // Spam Emails
 router.get("/spam",authCheck, async (req, res) => {
-    const emails = await Email.find({ spam: true });
+    const emails = await Email.find({ spam: true,to:req.user.email  });
     res.render("./email/spam.ejs", { emails });
 });
 //urgent Emails
 router.get("/urgent",authCheck, async (req, res) => {
-    const emails = await Email.find({ urgent: true ,spam : false });
+    const emails = await Email.find({ urgent: true ,spam : false,to:req.user.email  });
     res.render("./email/urgent.ejs", { emails });
 });
 
