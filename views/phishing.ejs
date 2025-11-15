@@ -1,0 +1,47 @@
+<% layout('layouts/bolierplate') %>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Phishing Email Checker</h2>
+
+  <form id="checkForm" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label class="form-label">Subject</label>
+      <input type="text" id="subject" class="form-control" placeholder="Enter subject">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email Body</label>
+      <textarea id="body" class="form-control" style="height:140px" placeholder="Paste email body"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Check</button>
+    <button type="button" id="clearBtn" class="btn btn-secondary ms-2">Clear</button>
+  </form>
+
+  <div id="output" class="mt-4 fw-bold" style="font-size: 1.1rem;"></div>
+</div>
+
+<script>
+  document.getElementById("checkForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const subject = document.getElementById("subject").value;
+    const body = document.getElementById("body").value;
+    const out = document.getElementById("output");
+    out.textContent = "Checking...";
+
+    const res = await fetch("/phishing/check", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ subject, body })
+    });
+
+    const data = await res.json();
+    out.innerHTML = `${data.status} — Risk: <b>${data.risk}</b><br>${data.explanation}`;
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    document.getElementById("subject").value = "";
+    document.getElementById("body").value = "";
+    document.getElementById("output").innerHTML = "";
+  });
+</script>
