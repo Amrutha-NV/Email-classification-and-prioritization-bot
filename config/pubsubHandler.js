@@ -79,7 +79,14 @@ function extractMessageBody(payload) {
  * - Persists each cleaned message into the Email collection (associates user._id)
  *
  * Note: this handler intentionally avoids printing full messages to console.
- */
+ * 
+/** */
+function extractEmail(raw){
+    if(!raw)return '';
+    const match=raw.match(/<(.+?)>/);
+    if(match)return match[1].trim();
+    return raw.trim();
+}
 async function handlePubSubPush(req, res) {
     try {
         console.log('Received Pub/Sub push notification');
@@ -215,8 +222,8 @@ try {
                             user: user._id,
                             gmail_message_id: msg.id,
                             gmail_thread_id: msg.threadId,
-                            from: getHeader('From') || '',
-                            to: getHeader('To') || '',
+                            from: extractEmail(getHeader('From')) || '',
+                            to: extractEmail(getHeader('To')) || '',
                             subject: subject,
                             snippet: msg.snippet || '',
                             body: cleanedBody || '',
