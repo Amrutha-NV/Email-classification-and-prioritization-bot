@@ -1,0 +1,62 @@
+<% layout("layouts/bolierplate.ejs") %>
+
+<div class="email-container mt-4">
+
+    <h2 class="mb-4">Urgent Draft Messages</h2>
+
+    <% if (drafts.length === 0) { %>
+
+        <div class="alert alert-info">No urgent drafts available.</div>
+
+    <% } else { %>
+
+        <% drafts.forEach(draft => { %>
+
+            <div class="card shadow-sm mb-3">
+
+                <div class="card-body">
+
+                    <h5 class="card-title mb-2 d-flex align-items-center gap-2">
+
+                        <!-- DRAFT Badge -->
+                        <span class="badge badge-draft">Draft</span>
+
+                        <!-- STATUS Badge -->
+                        <% if (draft.status === "pending") { %>
+                            <span class="badge badge-pending">Pending</span>
+                        <% } else if (draft.status === "edited") { %>
+                            <span class="badge badge-edited">Edited</span>
+                        <% } %>
+
+                    </h5>
+
+                    <p class="card-text">
+                        <%= draft.draftBody.length > 120 
+                            ? draft.draftBody.substring(0, 120) + "..."
+                            : draft.draftBody 
+                        %>
+                    </p>
+
+                    <div class="mt-3 d-flex gap-2">
+
+                        <a href="/draft/<%= draft._id %>" class="btn btn-outline-primary btn-sm">
+                            View
+                        </a>
+
+                        <form action="/draft/<%= draft._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        <% }) %>
+
+    <% } %>
+
+</div>

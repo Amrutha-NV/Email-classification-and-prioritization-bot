@@ -1,0 +1,24 @@
+<% layout("layouts/bolierplate.ejs") %>
+
+<div class="email-container mt-4">
+  <h2>Sent Emails</h2>
+
+  <% if (emails.length === 0) { %>
+      <p>No sent emails.</p>
+  <% } else { %>
+
+      <% emails.forEach(email => { %>
+        <div class="card mb-3 border-primary">
+          <div class="card-body">
+            <h5 class="card-title"><%= email.subject %></h5>
+
+            <p><strong>To:</strong> <%= email.to %></p>
+            <p><%= email.body.substring(0, 120) %>...</p>
+
+            <a href="/emails/<%= email._id %>" class="btn btn-sm btn-primary">View</a>
+          </div>
+        </div>
+      <% }) %>
+
+  <% } %>
+</div>
