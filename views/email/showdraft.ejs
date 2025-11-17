@@ -13,7 +13,7 @@
         <input 
           type="email" 
           class="form-control" 
-          value="<%= draft.originalEmail?.from %>" 
+          value="<%= user.email  %>" 
           readonly
         >
       </div>
@@ -24,7 +24,7 @@
         <input 
           type="email" 
           class="form-control" 
-          value="<%= draft.originalEmail?.to %>" 
+          value="<%= draft.originalEmail?.from %>" 
           readonly
         >
       </div>
@@ -59,19 +59,23 @@
         </span>
       </p> -->
 
-      <!-- SAVE BUTTON -->
-      <button type="submit" class="btn btn-secondary mt-3">Save Edits</button>
-    </form>
+      <div class="d-flex gap-3 mt-3">
 
-    <!-- SEND BUTTON (SEPARATE FORM) -->
-    <form action="/draft/<%= draft._id %>/send" method="POST" class="mt-3">
-      <button class="btn btn-success">Send</button>
-    </form>
+  <form action="/draft/<%= draft._id %>?_method=PUT" method="POST">
+    <button class="btn btn-secondary">Save</button>
+  </form>
 
-    <!-- DELETE BUTTON (SEPARATE FORM) -->
-    <form action="/draft/<%= draft._id %>?_method=DELETE" method="POST" class="mt-3">
-      <button class="btn btn-danger">Delete</button>
-    </form>
+  <form action="/draft/<%= draft._id %>/send" method="POST">
+    <button class="btn btn-success">Send</button>
+  </form>
+
+  <form action="/draft/<%= draft._id %>?_method=DELETE" method="POST">
+    <button class="btn btn-danger">Delete</button>
+  </form>
+
+</div>
+
+
 
   </div>
 </body>
