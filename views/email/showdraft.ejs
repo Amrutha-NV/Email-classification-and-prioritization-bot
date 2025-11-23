@@ -11,23 +11,27 @@
         <!-- UPDATE FORM -->
         <form action="/draft/<%= draft._id %>?_method=PUT" method="POST">
 
-            <!-- FROM -->
-            <div class="mb-3">
-                <label class="form-label fw-semibold">From</label>
-                <input type="email"
-                       class="form-control rounded-3"
-                       value="<%= draft.originalEmail?.from %>"
-                       readonly>
-            </div>
+      <!-- From -->
+      <div class="mb-3">
+        <label class="form-label">From</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          value="<%= user.email  %>" 
+          readonly
+        >
+      </div>
 
-            <!-- TO -->
-            <div class="mb-3">
-                <label class="form-label fw-semibold">To</label>
-                <input type="email"
-                       class="form-control rounded-3"
-                       value="<%= draft.originalEmail?.to %>"
-                       readonly>
-            </div>
+      <!-- To -->
+      <div class="mb-3">
+        <label class="form-label">To</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          value="<%= draft.originalEmail?.from %>" 
+          readonly
+        >
+      </div>
 
             <!-- SUBJECT -->
             <div class="mb-3">
@@ -59,26 +63,30 @@
                 <% } %>
             </div>
 
-            <!-- INLINE BUTTONS -->
-            <div class="d-flex gap-3 mt-4">
+      <!-- Status -->
+      <!-- <p>
+        <strong>Status:</strong>
+        <span class="badge 
+            <%= draft.status === 'pending' ? 'bg-warning text-dark' : '' %>
+            <%= draft.status === 'edited' ? 'bg-info text-dark' : '' %>
+            <%= draft.status === 'sent' ? 'bg-success text-light' : '' %>">
+            <%= draft.status.toUpperCase() %>
+        </span>
+      </p> -->
 
-                <button type="submit" class="btn btn-primary px-4 py-2 rounded-3">
-                    Save
-                </button>
+      <div class="d-flex gap-3 mt-3">
 
-        </form>
+  <form action="/draft/<%= draft._id %>?_method=PUT" method="POST">
+    <button class="btn btn-secondary">Save</button>
+  </form>
 
-        <form action="/draft/<%= draft._id %>/send" method="POST">
-            <button class="btn btn-success px-4 py-2 rounded-3">
-                Send
-            </button>
-        </form>
+  <form action="/draft/<%= draft._id %>/send" method="POST">
+    <button class="btn btn-success">Send</button>
+  </form>
 
-        <form action="/draft/<%= draft._id %>?_method=DELETE" method="POST">
-            <button class="btn btn-danger px-4 py-2 rounded-3">
-                Delete
-            </button>
-        </form>
+  <form action="/draft/<%= draft._id %>?_method=DELETE" method="POST">
+    <button class="btn btn-danger">Delete</button>
+  </form>
 
         </div>
 
@@ -86,4 +94,9 @@
 
 </div>
 
+</div>
+
+
+
+  </div>
 </body>

@@ -9,6 +9,7 @@ const OpenAI = require("openai");
 const Draft = require("../models/draft.js");
 const Email = require("../models/emails.js");
 const authCheck = require("../middelwares.js/authcheck.js");
+const { getAccessTokenFromRefreshToken } = require("../config/gmailhelper.js");
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -157,8 +158,8 @@ router.post("/:id/send", authCheck, async (req, res) => {
     const gmail = google.gmail({ version: "v1", auth: client });
 
     const rawMessage =
-      `From: ${draft.originalEmail.from}\r\n` +
-      `To: ${draft.originalEmail.to}\r\n` +
+      `From: ${user.email}\r\n` +          
+      `To: ${draft.originalEmail.from}\r\n` +
       `Subject: ${draft.originalEmail.subject}\r\n\r\n` +
       `${draft.draftBody}`;
 
@@ -182,7 +183,7 @@ router.post("/:id/send", authCheck, async (req, res) => {
 
     req.flash("success", "Email sent successfully!");
     // Redirect to view page
-    res.redirect(`/draft/${draft._id}`);
+    res.redirect("/emails/urgent");
 
   } catch (err) {
     console.error("Send error:", err);

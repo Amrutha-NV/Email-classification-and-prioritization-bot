@@ -62,8 +62,11 @@ app.use(passport.session());
 app.get("/", (req, res) => {
     res.redirect("/auth/login");
 });
+app.use((req, res, next) => {
+    res.locals.user = req.user; 
+    next();
+});
 
-app.use("/phishing", phishingRoute);
 app.use("/emails", emailrouter);
 app.use("/auth", userrouter);
 app.use("/draft", draftRoutes);
