@@ -63,11 +63,11 @@ router.get(
 );
 
 // ------------------------------------
-// 🎯 Google OAuth Callback
+// Google OAuth Callback
 // ------------------------------------
 router.get(
   '/google/redirect',
-  passport.authenticate('google', { failureRedirect: '/auth/login', session: true }),
+  passport.authenticate('google', { successRedirect:'/emails',failureRedirect: '/auth/login', session: true }),
   async (req, res) => {
     try {
       const user = req.user;

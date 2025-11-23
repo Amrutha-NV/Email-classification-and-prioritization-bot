@@ -1,74 +1,84 @@
-<nav class="navbar navbar-dark bg-dark sticky-top">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-        <div>
-            <h1 style="color:azure">Mail Flow</h1>
-        </div>
-        
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+<nav class="navbar navbar-dark bg-dark sticky-top shadow-sm">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" 
+                data-bs-target="#sidebar" aria-controls="sidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Title -->
+        <h2 class="m-0 fw-bold text-light">Mail Flow</h2>
+
+        <!-- Search -->
+        <form class="d-flex" role="search">
+            <input class="form-control me-2 rounded-3" type="search" placeholder="Search">
+            <button class="btn btn-outline-success rounded-3" type="submit">Search</button>
         </form>
-        <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-            <div class="offcanvas-header data-bs-scroll">
-                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Email</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/Compose"><button type="button" class="btn btn-info">Compose</button></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/urgent"><button type="button" class="btn btn-danger">Urgent</button></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/"><button type="button" class="btn btn-primary">All Inbox</button></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/work"><button type="button" class="btn btn-success">Work</button></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/personal"><button type="button" class="btn btn-warning">Personal</button></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/promotions"><button type="button" class="btn btn-info">Promotions</button></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/spam"><button type="button" class="btn btn-danger">Spam</button></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/draft">
-                            <button type="button" class="btn btn-light">Drafts</button>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/emails/sent">
-                            <button type="button" class="btn btn-outline-light">Sent</button>
-                        </a>
-                    </li>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="sidebar">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">MAIL FLOW</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body">
+
+            <!-- BUTTON STYLE (50% WIDTH) -->
+            <% const btn = "btn sidebar-btn fw-semibold rounded-3 py-2 px-3"; %>
+
+            <style>
+                .sidebar-btn {
+                    width: 50% !important;
+                    min-width: 130px;
+                    text-align: center;
+                }
+            </style>
+
+            <ul class="navbar-nav flex-column gap-3">
+
+                <li><a href="/emails/compose" class="<%= btn %> btn-info text-dark">Compose</a></li>
+
+                <li><a href="/emails/urgent" class="<%= btn %> btn-danger">Urgent</a></li>
+
+                <li><a href="/emails" class="<%= btn %> btn-primary">All Inbox</a></li>
+
+                <li><a href="/emails/work" class="<%= btn %> btn-success">Work</a></li>
+
+                <li><a href="/emails/personal" class="<%= btn %> btn-warning text-dark">Personal</a></li>
+
+                <li><a href="/emails/promotions" class="<%= btn %> btn-info text-dark">Promotions</a></li>
+
+                <li><a href="/emails/spam" class="<%= btn %> btn-danger">Spam</a></li>
+
+                <li><a href="/draft" class="<%= btn %> btn-light text-dark">Drafts</a></li>
+
+                <li><a href="/emails/sent" class="<%= btn %> btn-outline-light">Sent</a></li>
+
+                <li class="mt-2">
+                    <form method="POST" action="/auth/sync/start">
+                        <button class="<%= btn %> btn-success w-auto">
+                            <i class="fas fa-plug"></i> Sync-In
+                        </button>
+                    </form>
+                </li>
+                <li>
+    <a href="/phishing" class="<%= btn %> btn-warning text-light">
+        Phishing Checker
+    </a>
+</li>
 
 
-                    <br>
-                    <li class="nav-item">
-                        <form method="POST" action="/auth/sync/start" class="sync-form">
-    <button type="submit nav-link active" class="btn btn-success ">
-        <i class="fas fa-plug"></i> Sync-in
-    </button>
-    
-    <p class="text-muted mt-2">
-        (This will activate the Gemini bot to monitor your Inbox.)
-    </p>
-</form>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/auth/logout"><button type="button" class="btn btn-secondary">Logout</button></a>
-                    </li>
-                </ul>
-            </div>
+                <li>
+                    <a href="/auth/logout" class="<%= btn %> btn-secondary">Logout</a>
+                </li>
+
+            </ul>
 
         </div>
     </div>
+
 </nav>

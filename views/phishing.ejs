@@ -1,24 +1,63 @@
 <% layout('layouts/bolierplate') %>
 
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Phishing Email Checker</h2>
+<div class="container mt-5 d-flex justify-content-center">
 
-  <form id="checkForm" class="card p-4 shadow-sm">
-    <div class="mb-3">
-      <label class="form-label">Subject</label>
-      <input type="text" id="subject" class="form-control" placeholder="Enter subject">
-    </div>
+  <div class="compose-container w-100" style="max-width: 700px;">
 
-    <div class="mb-3">
-      <label class="form-label">Email Body</label>
-      <textarea id="body" class="form-control" style="height:140px" placeholder="Paste email body"></textarea>
-    </div>
+    <!-- TITLE -->
+    <h2 class="fw-bold text-center mb-4">Phishing Email Checker</h2>
 
-    <button type="submit" class="btn btn-primary">Check</button>
-    <button type="button" id="clearBtn" class="btn btn-secondary ms-2">Clear</button>
-  </form>
+    <!-- FORM CARD -->
+    <form id="checkForm" class="p-3">
 
-  <div id="output" class="mt-4 fw-bold" style="font-size: 1.1rem;"></div>
+      <!-- SUBJECT -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Subject</label>
+        <input 
+          type="text" 
+          id="subject" 
+          class="form-control rounded-3" 
+          placeholder="Enter subject"
+        >
+      </div>
+
+      <!-- BODY -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Email Body</label>
+        <textarea 
+          id="body" 
+          class="form-control rounded-3"
+          style="height: 140px"
+          placeholder="Paste email body here"
+        ></textarea>
+      </div>
+
+      <!-- BUTTONS INLINE -->
+      <div class="d-flex gap-3 mt-3">
+        <button type="submit" class="btn btn-primary px-4 py-2 rounded-3">
+          Check
+        </button>
+
+        <button 
+          type="button" 
+          id="clearBtn" 
+          class="btn btn-secondary px-4 py-2 rounded-3"
+        >
+          Clear
+        </button>
+      </div>
+
+    </form>
+
+    <!-- OUTPUT -->
+    <div 
+      id="output" 
+      class="mt-4 fw-semibold text-secondary rounded-3 p-3"
+      style="background:#f8f9fa; border: 1px solid #e0e0e0; font-size: 1rem;"
+    ></div>
+
+  </div>
+
 </div>
 
 <script>
@@ -27,7 +66,9 @@
     const subject = document.getElementById("subject").value;
     const body = document.getElementById("body").value;
     const out = document.getElementById("output");
-    out.textContent = "Checking...";
+
+    out.innerHTML = "Checking...";
+    out.style.color = "#555";
 
     const res = await fetch("/phishing/check", {
       method: "POST",
@@ -36,7 +77,12 @@
     });
 
     const data = await res.json();
-    out.innerHTML = `${data.status} — Risk: <b>${data.risk}</b><br>${data.explanation}`;
+
+    out.innerHTML = `
+      <span class="fw-bold">${data.status}</span> — 
+      <span class="text-primary">Risk: <b>${data.risk}</b></span><br>
+      <small>${data.explanation}</small>
+    `;
   });
 
   document.getElementById("clearBtn").addEventListener("click", () => {

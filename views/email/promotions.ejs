@@ -1,25 +1,92 @@
 <% layout("/layouts/bolierplate.ejs") %>
 
 <body>
+
+<div class="container mt-4">
+
     <div class="inbox">
-        <h3 calss=" category-title"><b>Promotions Emails</b></h3>
+
+        <!-- PAGE TITLE -->
+        <h3 class="category-title fw-bold mb-4">Promotional Emails</h3>
+
         <% for (email of emails) { %>
-            <div class="card email badge-body">
+
+            <div class="card email shadow-sm mb-3 border-0">
+
                 <div class="card-body">
-                    <span class="badge rounded-pill bg-info text-dark"><%= email.label %></span>
-                    <h5 class="card-title">
-                        <a href="/emails/<%= email._id %>"><%= email.subject %></a>
-                    </h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><%= email.from %></h6>
-                    <p class="card-text"><%= email.body.substring(0,100) %></p>
+
+                    <!-- TOP ROW -->
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <!-- LEFT: Avatar + content -->
+                        <div class="d-flex align-items-center gap-3 flex-grow-1">
+
+                            <!-- Avatar -->
+                            <div class="rounded-circle text-white d-flex justify-content-center align-items-center flex-shrink-0"
+                                 style="width: 42px; height: 42px;"
+                                 data-email="<%= email.from %>">
+                                <%= email.from.charAt(0).toUpperCase() %>
+                            </div>
+
+                            <!-- Subject + From -->
+                            <div class="d-flex flex-column">
+
+                                <!-- Subject -->
+                                <a href="/emails/<%= email._id %>"
+                                   class="text-decoration-none fw-bold email-title">
+                                    <%= email.subject %>
+                                </a>
+
+                                <!-- From -->
+                                <span class="card-subtitle text-muted">
+                                    <%= email.from %>
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: Badge -->
+                        <span class="badge rounded-pill text-bg-dark px-3 py-2">
+                            <%= email.label %>
+                        </span>
+
+                    </div>
+
+                    <!-- PREVIEW TEXT -->
+                    <p class="card-text text-secondary mt-3">
+                        <%= email.body.substring(0, 100) %>...
+                    </p>
+
                 </div>
+
             </div>
+
         <% } %>
+
     </div>
-    <script>
-    setInterval(() => {
-        window.location.reload();
-    }, 10000);
+
+</div>
+
+<!-- AUTO-COLOR AVATAR -->
+<script>
+document.querySelectorAll('[data-email]').forEach(avatar => {
+    const email = avatar.dataset.email || "user";
+    let hash = 0;
+
+    for (let i = 0; i < email.length; i++) {
+        hash = email.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue = Math.abs(hash % 360);
+    avatar.style.backgroundColor = `hsl(${hue}, 70%, 55%)`;
+});
+</script>
+
+<!-- AUTO REFRESH -->
+<script>
+setInterval(() => {
+    window.location.reload();
+}, 10000);
 </script>
 
 </body>
