@@ -1,33 +1,28 @@
 require('dotenv').config();
+console.log("TEST WHATSAPP NUMBER LOADED:", process.env.TEST_WHATSAPP_NUMBER);
+const axios = require("axios");
 const express = require("express");
 const app = express();
 const port = 8080;
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+
+// ROUTES & HELPERS
+const emailrouter = require("./routes/emails.js");
 const phishingRoute = require("./routes/phishing");
 const cookieSession = require('cookie-session');
 const session = require('express-session');
-const mongoose=require('mongoose');
 const passport = require('passport');
 const passportSetup = require('./config/passportsetup');
-const emailrouter = require("./routes/emails.js");
 const userrouter = require("./routes/user.js");
+const { google } = require('googleapis');
+const Email = require('./models/emails.js');
+const { getAccessTokenFromRefreshToken } = require('./config/gmailhelper.js');
+const { handlePubSubPush } = require('./config/pubsubHandler.js');
 const draftRoutes = require("./routes/draft.js");
-const flash = require('connect-flash');
 
-
-async function main() {
-    try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/EmailDatabase');
-        console.log("MongoDB connected successfully");
-    } catch (err) {
-        console.error("MongoDB connection failed:", err);
-    }
-}
-main();
-
-//views
+// ---------- View Engine Setup ----------
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -38,15 +33,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 
-// sessions
+// ---------- Session & Flash ----------
 app.use(session({
-   secret: 'your_session_secret',
-   resave: false,
-   saveUninitialized: false,
-   cookie: { maxAge: 24 * 60 * 60 * 1000 }
+    secret: 'your_session_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }));
 
-// flash
+const flash = require('connect-flash');
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
@@ -54,31 +49,43 @@ app.use((req, res, next) => {
     next();
 });
 
-// passort
+// ---------- Passport ----------
 app.use(passport.initialize());
 app.use(passport.session());
 
-// routes
+// ---------- Database ----------
+const mongoose = require('mongoose');
+main().then(() => console.log("connection made successfully"))
+.catch(err => console.log(err));
+
+async function main() {
+    await mongoose.connect('mongodb://127.0.0.1:27017/EmailDatabase');
+}
+
+// ---------- Routes ----------
 app.get("/", (req, res) => {
     res.redirect("/auth/login");
 });
-app.use((req, res, next) => {
-    res.locals.user = req.user; 
-    next();
-});
 
+app.use("/phishing", phishingRoute);
 app.use("/emails", emailrouter);
 app.use("/auth", userrouter);
 app.use("/draft", draftRoutes);
 
+// ---------- Gmail Webhook ----------
+app.post('/webhook/gmail', express.json({ limit: '1mb' }), handlePubSubPush);
 
 
+// ---------- Test WhatsApp ----------
+const sendWhatsappMessage = require("./utils/sendWhatsapp");
 
-// webhook to call pub sub handler
-const { handlePubSubPush } = require('./config/pubsubHandler.js');
-app.post('/webhook/gmail', handlePubSubPush);
+app.get("/test-whatsapp", async (req, res) => {
+  await sendWhatsappMessage("🚨 Test WhatsApp alert from backend!");
+  res.send("WhatsApp message sent!");
+});
 
-// activating the server
+
+// ---------- Start Server ----------
 app.listen(port, () => {
     console.log(`listening at port ${port}`);
 });

@@ -3,8 +3,8 @@ const User = require('../models/user.js');
 const Email = require('../models/emails.js');
 const { getAccessTokenFromRefreshToken } = require('./gmailhelper.js');
 const { classifyEmail } = require('./geminiclassify.js');
-const axios = require('axios');
-
+const sendWhatsappMessage = require("../utils/sendWhatsapp.js");
+const axios = require("axios");
 
 function decodeBase64Url(input) {
     if (!input) return '';
@@ -180,7 +180,6 @@ async function handlePubSubPush(req, res) {
                 const cleanedBody = extractMessageBody(msg.payload);
                 console.log(`Processing message ID: ${msg.id}, Subject: "${subject}", User: ${user._id}`);
 
-                // classify email: returns { category, isUrgent }
                // classify email: returns { category, isUrgent }
                 let category = "";
                 let isUrgent = false;
@@ -188,14 +187,21 @@ async function handlePubSubPush(req, res) {
                     const cls = await classifyEmail(cleanedBody || subject, subject);
                     if (cls && cls.category) category = String(cls.category).toLowerCase();
                     if (cls && typeof cls.isUrgent === 'boolean') isUrgent = cls.isUrgent;
-                    if (cls && typeof cls.isUrgent === 'boolean') isUrgent = cls.isUrgent;
                 } catch (clsErr) {
                     console.error('Classification error:', clsErr && clsErr.message ? clsErr.message : clsErr);
             }
+            // 🚨 If urgent email detected, send WhatsApp notification
+            if (isUrgent) {
+            console.log("🚨 Urgent Email Detected — Sending WhatsApp Notification");
+
+            await sendWhatsappMessage(
+                `🚨 URGENT EMAIL ALERT 🚨\n\nSubject: ${subject}\nFrom: ${extractEmail(getHeader('From'))}\n\nPlease check immediately.`
+            );
+            }
+
             let isSpam = false;
 
 try {
-  const axios = require("axios");
 
   console.log("Sending text to Flask spam classifier...");
 
