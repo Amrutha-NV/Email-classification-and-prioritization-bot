@@ -1,11 +1,15 @@
 <% layout("layouts/bolierplate.ejs") %>
 
 <body>
-  <div class="compose-container mt-4">
-    <h1>Draft Message</h1>
 
-    <!-- UPDATE FORM -->
-    <form action="/draft/<%= draft._id %>?_method=PUT" method="POST">
+<div class="container mt-4 d-flex justify-content-center">
+
+    <div class="compose-container w-100" style="max-width: 700px;">
+
+        <h1 class="fw-bold mb-4 text-center">Edit Draft</h1>
+
+        <!-- UPDATE FORM -->
+        <form action="/draft/<%= draft._id %>?_method=PUT" method="POST">
 
       <!-- From -->
       <div class="mb-3">
@@ -29,24 +33,35 @@
         >
       </div>
 
-      <!-- Subject -->
-      <div class="mb-3">
-        <label class="form-label">Subject</label>
-        <input 
-          type="text" 
-          class="form-control"
-          name="subject"
-          value="<%= draft.originalEmail?.subject %>">
-      </div>
+            <!-- SUBJECT -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Subject</label>
+                <input type="text"
+                       class="form-control rounded-3"
+                       name="subject"
+                       value="<%= draft.originalEmail?.subject %>">
+            </div>
 
-      <!-- Draft Body -->
-      <div class="mb-3">
-        <label class="form-label">Draft Body</label>
-        <textarea 
-          class="form-control"
-          name="draftBody"
-          rows="8"><%= draft.draftBody %></textarea>
-      </div>
+            <!-- BODY -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Draft Body</label>
+                <textarea class="form-control rounded-3"
+                          name="draftBody"
+                          rows="7"><%= draft.draftBody %></textarea>
+            </div>
+
+            <!-- STATUS BADGE -->
+            <div class="mb-3">
+                <% if (draft.status === "pending") { %>
+                    <span class="badge rounded-pill text-bg-warning px-3 py-2">Pending</span>
+                <% } else if (draft.status === "edited") { %>
+                    <span class="badge rounded-pill text-bg-primary px-3 py-2">Edited</span>
+                <% } else if (draft.status === "sent") { %>
+                    <span class="badge rounded-pill text-bg-success px-3 py-2">Sent</span>
+                <% } else { %>
+                    <span class="badge rounded-pill text-bg-dark px-3 py-2"><%= draft.status %></span>
+                <% } %>
+            </div>
 
       <!-- Status -->
       <!-- <p>
@@ -72,6 +87,12 @@
   <form action="/draft/<%= draft._id %>?_method=DELETE" method="POST">
     <button class="btn btn-danger">Delete</button>
   </form>
+
+        </div>
+
+    </div>
+
+</div>
 
 </div>
 

@@ -1,35 +1,116 @@
 <% layout("/layouts/bolierplate.ejs") %>
 
-    <body>
+<body>
 
-        <div class="inbox">
+<div class="container mt-4">
 
-            <%   for( email of emails){%>
+    <div class="inbox">
 
-                <div class="card email badge-body">
+        <% for (email of emails) { %>
 
-                    <div class="card-body ">
-                        <span class="badge rounded-pill bg-success"><%= email.label %></span>
-                        <h5 class="card-title">
-                            <a href="/emails/<%=email._id %>">
+        <div class="card email shadow-sm mb-3 border-0">
+
+            <div class="card-body">
+
+                <!-- TOP ROW -->
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <!-- LEFT: Avatar + Sender + Subject -->
+                    <div class="d-flex align-items-center gap-3 flex-grow-1">
+
+                        <!-- Avatar (Bootstrap perfect circle) -->
+                        <div class="rounded-circle text-white d-flex justify-content-center align-items-center flex-shrink-0"
+                             style="width: 42px; height: 42px;"
+                             data-email="<%= email.from %>">
+                            <%= email.from.charAt(0).toUpperCase() %>
+                        </div>
+
+                        <!-- Sender + Subject -->
+                        <div class="d-flex flex-column text-start flex-grow-1">
+
+                            <!-- Sender -->
+                            <span class="sender-name fw-semibold">
+                                <%= email.from %>
+                            </span>
+
+                            <!-- Subject -->
+                            <a href="/emails/<%= email._id %>"
+                               class="text-decoration-none fw-bold email-title">
                                 <%= email.subject %>
-
                             </a>
-                        </h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            <%=email.from %>
-                        </h6>
-                        <p class="card-text">
-                            <%=email.body.substring(0,100) %>
-                        </p>
+
+                        </div>
+
                     </div>
+
+                    <!-- RIGHT: LABEL BADGE -->
+                    <div class="ms-3">
+
+                        <% if (email.label === 'promotions') { %>
+                            <span class="badge rounded-pill text-bg-danger px-3 py-2">
+                                <%= email.label %>
+                            </span>
+
+                        <% } else if (email.label === 'work') { %>
+                            <span class="badge rounded-pill text-bg-success px-3 py-2">
+                                <%= email.label %>
+                            </span>
+
+                        <% } else if (email.label === 'personal') { %>
+                            <span class="badge rounded-pill text-bg-primary px-3 py-2">
+                                <%= email.label %>
+                            </span>
+
+                        <% } else if (email.label === 'spam') { %>
+                            <span class="badge rounded-pill text-bg-warning px-3 py-2">
+                                <%= email.label %>
+                            </span>
+
+                        <% } else { %>
+                            <span class="badge rounded-pill text-bg-dark px-3 py-2">
+                                <%= email.label %>
+                            </span>
+                        <% } %>
+
+                    </div>
+
                 </div>
-                <% } %>
+
+                <!-- PREVIEW TEXT -->
+                <p class="card-text text-secondary mt-3">
+                    <%= email.body.substring(0,150) %>...
+                </p>
+
+            </div>
+
         </div>
+
+        <% } %>
+
+    </div>
+
+</div>
+
+<!-- AUTO-COLOR AVATAR LOGIC -->
+<script>
+document.querySelectorAll('[data-email]').forEach(avatar => {
+    const email = avatar.dataset.email || "user";
+    let hash = 0;
+
+    for (let i = 0; i < email.length; i++) {
+        hash = email.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue = Math.abs(hash % 360);
+    avatar.style.backgroundColor = `hsl(${hue}, 70%, 55%)`;
+});
+</script>
+
+<!-- AUTO REFRESH -->
 <script>
     setInterval(() => {
         window.location.reload();
     }, 10000);
 </script>
 
-    </body>
+</body>
