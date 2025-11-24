@@ -102,7 +102,7 @@ router.get("/:id", authCheck, async (req, res, next) => {
     if (!draft) return res.status(404).send("Draft not found");
 
     console.log("📨 Loaded Draft:", draft._id);
-    return res.render("./email/showdraft.ejs", { draft });
+    return res.render("./email/showdraft.ejs", { draft, user: req.user });
   } catch (err) {
     console.error("❌ Error loading draft:", err);
     next(err);
@@ -174,16 +174,29 @@ router.post("/:id/send", authCheck, async (req, res) => {
       requestBody: { raw: encodedMessage },
     });
 
+    // After gmail.users.messages.send(...)
     console.log("✔ Email sent!");
 
-    // 🔥 UPDATE DRAFT STATUS
+    // Save to DB as Sent Email
+    await Email.create({
+        from: user.email,
+        to: draft.originalEmail.from,
+        subject: draft.originalEmail.subject,
+        body: draft.draftBody,
+        label: "sent",
+        spam: false,
+        urgent: draft.category === "urgent",
+        user: user._id
+    });
+
+    // Update draft status
     draft.status = "sent";
     draft.sentAt = new Date();
     await draft.save();
 
     req.flash("success", "Email sent successfully!");
-    // Redirect to view page
-    res.redirect("/emails/urgent");
+    res.redirect("/emails/sent");    // redirect to Sent page instead of urgent
+
 
   } catch (err) {
     console.error("Send error:", err);

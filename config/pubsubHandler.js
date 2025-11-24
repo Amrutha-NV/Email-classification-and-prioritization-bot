@@ -179,6 +179,16 @@ async function handlePubSubPush(req, res) {
                 const subject = getHeader('Subject') || '';
                 const cleanedBody = extractMessageBody(msg.payload);
                 console.log(`Processing message ID: ${msg.id}, Subject: "${subject}", User: ${user._id}`);
+                
+                // Identify sender and receiver
+                const fromAddress = extractEmail(getHeader("From"));
+                const toAddress = extractEmail(getHeader("To"));
+
+                // Skip outgoing self emails (when user replies or sends)
+                if (fromAddress === user.email) {
+                    console.log("Skipping WhatsApp — outgoing/self email");
+                    continue;
+                }
 
                // classify email: returns { category, isUrgent }
                 let category = "";
@@ -189,15 +199,7 @@ async function handlePubSubPush(req, res) {
                     if (cls && typeof cls.isUrgent === 'boolean') isUrgent = cls.isUrgent;
                 } catch (clsErr) {
                     console.error('Classification error:', clsErr && clsErr.message ? clsErr.message : clsErr);
-            }
-            // 🚨 If urgent email detected, send WhatsApp notification
-            if (isUrgent) {
-            console.log("🚨 Urgent Email Detected — Sending WhatsApp Notification");
-
-            await sendWhatsappMessage(
-                `🚨 URGENT EMAIL ALERT 🚨\n\nSubject: ${subject}\nFrom: ${extractEmail(getHeader('From'))}\n\nPlease check immediately.`
-            );
-            }
+                }
 
             let isSpam = false;
 
@@ -240,6 +242,28 @@ try {
                             receivedAt: getHeader('Date') ? new Date(getHeader('Date')) : new Date()
                         });
                         await emailDoc.save();
+                        // --- Send WhatsApp Notification Only for Urgent Emails ---
+                        if (isUrgent) {
+                        console.log("🚨 Urgent email detected — sending WhatsApp alert...");
+
+                        const previewText = (cleanedBody || "").substring(0, 120) + "...";
+
+                       const message = `
+🚨 *URGENT EMAIL ALERT* 🚨
+
+*Subject:* ${subject}
+*From:* ${fromAddress}
+
+*Preview:*
+${previewText}
+
+👉 *Please check immediately.*
+`;
+
+
+                        await sendWhatsappMessage(message.trim());
+                        console.log("📤 WhatsApp urgent alert sent!");
+                        }
     
                     }
                     processed++;
