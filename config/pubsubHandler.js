@@ -3,8 +3,8 @@ const User = require('../models/user.js');
 const Email = require('../models/emails.js');
 const { getAccessTokenFromRefreshToken } = require('./gmailhelper.js');
 const { classifyEmail } = require('./geminiclassify.js');
-const axios = require('axios');
-
+const sendWhatsappMessage = require("../utils/sendWhatsapp.js");
+const axios = require("axios");
 
 function decodeBase64Url(input) {
     if (!input) return '';
@@ -179,8 +179,17 @@ async function handlePubSubPush(req, res) {
                 const subject = getHeader('Subject') || '';
                 const cleanedBody = extractMessageBody(msg.payload);
                 console.log(`Processing message ID: ${msg.id}, Subject: "${subject}", User: ${user._id}`);
+                
+                // Identify sender and receiver
+                const fromAddress = extractEmail(getHeader("From"));
+                const toAddress = extractEmail(getHeader("To"));
 
-                // classify email: returns { category, isUrgent }
+                // Skip outgoing self emails (when user replies or sends)
+                if (fromAddress === user.email) {
+                    console.log("Skipping WhatsApp — outgoing/self email");
+                    continue;
+                }
+
                // classify email: returns { category, isUrgent }
                 let category = "";
                 let isUrgent = false;
@@ -188,14 +197,13 @@ async function handlePubSubPush(req, res) {
                     const cls = await classifyEmail(cleanedBody || subject, subject);
                     if (cls && cls.category) category = String(cls.category).toLowerCase();
                     if (cls && typeof cls.isUrgent === 'boolean') isUrgent = cls.isUrgent;
-                    if (cls && typeof cls.isUrgent === 'boolean') isUrgent = cls.isUrgent;
                 } catch (clsErr) {
                     console.error('Classification error:', clsErr && clsErr.message ? clsErr.message : clsErr);
-            }
+                }
+
             let isSpam = false;
 
 try {
-  const axios = require("axios");
 
   console.log("Sending text to Flask spam classifier...");
 
@@ -234,6 +242,28 @@ try {
                             receivedAt: getHeader('Date') ? new Date(getHeader('Date')) : new Date()
                         });
                         await emailDoc.save();
+                        // --- Send WhatsApp Notification Only for Urgent Emails ---
+                        if (isUrgent) {
+                        console.log("🚨 Urgent email detected — sending WhatsApp alert...");
+
+                        const previewText = (cleanedBody || "").substring(0, 120) + "...";
+
+                       const message = `
+🚨 *URGENT EMAIL ALERT* 🚨
+
+*Subject:* ${subject}
+*From:* ${fromAddress}
+
+*Preview:*
+${previewText}
+
+👉 *Please check immediately.*
+`;
+
+
+                        await sendWhatsappMessage(message.trim());
+                        console.log("📤 WhatsApp urgent alert sent!");
+                        }
     
                     }
                     processed++;
