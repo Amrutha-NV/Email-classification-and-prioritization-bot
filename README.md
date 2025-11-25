@@ -35,6 +35,6 @@ Contributions by Deepthi M
 
 5. Added seamless urgent–draft linking, allowing draft creation directly from urgent email pages with auto-populated sender/receiver details.
 
-6.Built a real-time WhatsApp alert system using Twilio API to instantly notify users of urgent emails, enabling fast response and preventing missed priority messages.
+6. Built a real-time WhatsApp alert system using Twilio API to instantly notify users of urgent emails, enabling fast response and preventing missed priority messages.
 
-7.Added formatted alert previews with subject, sender, and body snippet, plus auto-skip for self-sent emails to avoid unnecessary notifications.
+7. Added formatted alert previews with subject, sender, and body snippet, plus auto-skip for self-sent emails to avoid unnecessary notifications.
